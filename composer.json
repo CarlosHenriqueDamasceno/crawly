@@ -1,0 +1,21 @@
+{
+    "name": "carloshenrique/sereicrawly",
+    "description": "Projeto desenvolvido para o teste prático.",
+    "require": {
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Crawly\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Carlos Henrique Damasceno",
+            "email": "contato.carloshenriquedev@outlook.com"
+        }
+    ]
+}
