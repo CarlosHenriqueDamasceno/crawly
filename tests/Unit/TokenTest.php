@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use Crawly\Token;
 use PHPUnit\Framework\Attributes\Test;

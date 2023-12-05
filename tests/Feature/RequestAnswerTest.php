@@ -45,11 +45,10 @@ class RequestAnswerTest extends TestCase
             "/",
             [
                 "form_params" => ["token" => $newToken],
-                "headers" => [
-                    'Referer' => 'http://serei.crawly.com.br/'
-                ]
+                "headers" => ['Referer' => 'http://serei.crawly.com.br/']
             ]
         );
-        var_dump((string)$response->getBody());
+        $this->assertStringNotContainsString("Forbidden", (string)$response->getBody());
+        $this->assertStringContainsString('id="answer"', (string)$response->getBody());
     }
 }
