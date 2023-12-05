@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Crawly\GetToken;
-use Crawly\Token;
-use DOMDocument;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

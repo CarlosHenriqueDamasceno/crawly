@@ -12,17 +12,22 @@ use PHPUnit\Framework\TestCase;
 class RequestAnswerTest extends TestCase
 {
     const BASE_URL = "http://serei.crawly.com.br";
+    private Client $client;
+
+    protected function setUp(): void
+    {
+        $this->client = new Client([
+            "base_uri" => self::BASE_URL,
+            "cookies" => true
+        ]);
+    }
 
     #[Test]
     public function shouldGetAnswer(): void
     {
-        $client = new Client([
-            "base_uri" => self::BASE_URL,
-            "cookies" => true
-        ]);
-        $token = (new GetToken($client))->execute();
+        $token = (new GetToken($this->client))->execute();
         $preparedToken = $token->prepareToRequest();
-        $requestAnswer = new RequestAnswer($client);
+        $requestAnswer = new RequestAnswer($this->client);
         $answer = $requestAnswer->execute($preparedToken);
         $this->assertNotEmpty($answer);
     }
@@ -30,22 +35,18 @@ class RequestAnswerTest extends TestCase
     #[Test]
     public function fullRequestCycleTest(): void
     {
-        $client = new Client([
-            "base_uri" => self::BASE_URL,
-            'cookies' => true
-        ]);
-        $response = $client->get("/");
+        $response = $this->client->get("/");
         $bodyString = (string) $response->getBody();
         $dom = new DOMDocument();
         $dom->loadHTML($bodyString);
         $tokenElement = $dom->getElementById("token");
         $token = new Token($tokenElement->getAttribute("value"));
         $newToken = $token->prepareToRequest();
-        $response = $client->post(
+        $response = $this->client->post(
             "/",
             [
                 "form_params" => ["token" => $newToken],
-                "headers" => ['Referer' => 'http://serei.crawly.com.br/']
+                "headers" => ['Referer' => self::BASE_URL]
             ]
         );
         $this->assertStringNotContainsString("Forbidden", (string)$response->getBody());
