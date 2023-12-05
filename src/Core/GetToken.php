@@ -13,11 +13,18 @@ final readonly class GetToken
     {
     }
 
-    public function execute(): string
+    public function execute(): Token
     {
         $response = $this->client->get("/");
+        $bodyString = (string) $response->getBody();
+        $tokenText = $this->getTokenTextFromHtml($bodyString);
+        return new Token($tokenText);
+    }
+
+    private function getTokenTextFromHtml(string $html): string
+    {
         $dom = new DOMDocument();
-        $dom->loadHTML((string)$response->getBody());
+        $dom->loadHTML($html);
         $tokenElement = $dom->getElementById("token");
         return $tokenElement->getAttribute("value");
     }
